@@ -25,12 +25,11 @@ define(['jquery', 'stapes', 'mustache', 'text!template/template.html'], function
 			$('#qkgist').html(output);
 		},
 		setContent: function() {
-			console.log(this.model.getAllAsArray())
-			// for (var key in this.model.getAllAsArray()) {
-			// 	var template = $(templateHTML).filter('#template-module').html();
-			// 	var output = Mustache.render(template, content);
-			// 	$('#qkgistsContainer').html(output);
-			// }
+			for (var key in this.model.getAll) {
+				var template = $(templateHTML).filter('#template-module').html();
+				var output = Mustache.render(template, content);
+				$('#qkgistsContainer').html(output);
+			}
 		}
 	});
 });

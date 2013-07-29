@@ -28,31 +28,35 @@ define(['jquery', 'stapes'], function($, Stapes) {
 			});
 		},
 		setModelData: function(json) {
-			var key, file, fileName;
+			var key, file, fileId;
 
 			for (key in json) {
 				gist[key] = new Object();
 				gist[key]['description'] = json[key]['description'];
+				fileId = json[key]['id'];
+				this.getContent(fileId, key);
 				for (file in json[key]['files']) {
 					gist[key]['filename'] = json[key]['files'][file]['filename'];
 					gist[key]['content'] = "Loading...";
-					fileName = json[key]['files'][file]['raw_url'];
-					this.getContent(fileName, key);
 				}
-				this.push(gist[key]);
+				this.set(key, gist[key]);
 			}
 			this.emit('ready');
 		},
-		getContent: function(fileUrl, key) {
-			var self, text, file;
-			self = this;
+		getContent: function(fileId, key) {
+			var self = this;
 
 			$.ajax({
 				type: 'GET',
-				url: fileUrl,
-				dataType: "jsonp text",
-				success: function(data) {
-					self.set(gist[key]['content'], text)
+				url: 'https://api.github.com/gists/' + fileId,
+				dataType: "json",
+				success: function(json) {
+					var data = '';
+					for (var file in json['files']) {
+						data = json['files'][file]['content'];
+					}
+					self.set(key.content, data)
+					console.log(self.get(key).content)
 					self.emit('gotContent');
 				}
 			});
