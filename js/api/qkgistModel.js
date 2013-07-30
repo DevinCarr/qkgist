@@ -41,7 +41,6 @@ define(['jquery', 'stapes'], function($, Stapes) {
 				}
 				this.set(key, gist[key]);
 			}
-			this.emit('ready');
 		},
 		getContent: function(fileId, key) {
 			var self = this;
@@ -55,8 +54,7 @@ define(['jquery', 'stapes'], function($, Stapes) {
 					for (var file in json['files']) {
 						data = json['files'][file]['content'];
 					}
-					self.set(key.content, data)
-					console.log(self.get(key).content)
+					self.set(key + "content", data)
 					self.emit('gotContent');
 				}
 			});

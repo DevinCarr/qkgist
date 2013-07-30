@@ -23,12 +23,21 @@ define(['jquery', 'stapes', 'mustache', 'text!template/template.html'], function
 				userLink: this.model.get('userLink')
 			});
 			$('#qkgist').html(output);
+			this.model.removeItem('userName');
+			this.model.removeItem('userLink');
+
 		},
 		setContent: function() {
-			for (var key in this.model.getAll) {
-				var template = $(templateHTML).filter('#template-module').html();
-				var output = Mustache.render(template, content);
-				$('#qkgistsContainer').html(output);
+			for (var i = 0; i < this.model.getAllAsArray().length; i++) {
+				$('#qkgistsContainer').append('<div id="panel' + i + '"></div>')
+				var template = $(templateHTML).filter('#template-qkgist').html();
+				var output = Mustache.render(template, {
+					description: this.model.get(i['description']),
+					filename: this.model.get(i['filename']),
+					content: this.model.get(i['content'])
+				});
+				console.log(i)
+				$('#panel' + i).html(output);
 			}
 		}
 	});
