@@ -4,8 +4,8 @@ define(['jquery', 'stapes', 'mustache', 'text!template/template.html'], function
 			this.model = model,
 
 			this.model.on({
-	    		'change': function() {
-	    			this.buildModule();
+	    		'ready': function() {
+	    			this.setPanel();
 	    		},
 	    		'gotContent': function() {
 	    			this.setContent();
@@ -19,25 +19,29 @@ define(['jquery', 'stapes', 'mustache', 'text!template/template.html'], function
 		buildModule: function() {
 			var template = $(templateHTML).filter('#template-module').html();
 			var output = Mustache.render(template, {
-				userName: this.model.get('userName'),
-				userLink: this.model.get('userLink')
+				userName: this.model.getUserDetails().userName,
+				userLink: this.model.getUserDetails().userLink
 			});
 			$('#qkgist').html(output);
-			this.model.removeItem('userName');
-			this.model.removeItem('userLink');
-
 		},
-		setContent: function() {
-			for (var i = 0; i < this.model.getAllAsArray().length; i++) {
-				$('#qkgistsContainer').append('<div id="panel' + i + '"></div>')
+		setPanel: function() {
+			var gists = this.model.getAllAsArray();
+			for (var i = 0; i < this.model.size(); i++) {
+				$('#qkgistsContainer').append('<div id="gistpanel' + i + '"></div>');
 				var template = $(templateHTML).filter('#template-qkgist').html();
 				var output = Mustache.render(template, {
-					description: this.model.get(i['description']),
-					filename: this.model.get(i['filename']),
-					content: this.model.get(i['content'])
+					description: gists[i].description,
+					filename: gists[i].filename,
+					content: gists[i].content
 				});
-				console.log(i)
-				$('#panel' + i).html(output);
+				$('#gistpanel' + i).html(output);
+			}
+		},
+		setContent: function() {
+			var gists = this.model.getAllAsArray();
+			for (var i = 0; i < this.model.size(); i++) {
+				var loc = '#gistpanel' + i
+				$(loc).find('#content').html(gists[i].content);
 			}
 		}
 	});

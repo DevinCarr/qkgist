@@ -1,9 +1,10 @@
 define(['jquery', 'stapes'], function($, Stapes) {
 	var gist = new Object();
+	var userDetails = new Object();
 	return Stapes.subclass({
 		constructor: function(user) {
-			this.set('userName', user, false);
-			this.set('userLink', 'https://gist.github.com/' + user, false);
+			userDetails['userName'] = user;
+			userDetails['userLink'] = 'https://gist.github.com/' + user;
 		},
 		addItem: function(item) {
 			this.push(item);
@@ -17,7 +18,7 @@ define(['jquery', 'stapes'], function($, Stapes) {
 			var self = this;
 			$.ajax({
 				type: 'GET',
-				url: 'https://api.github.com/users/' + self.get('userName') + '/gists',
+				url: 'https://api.github.com/users/' + userDetails.userName + '/gists',
 				dataType: 'json',
 				success: function(json) {
 					self.setModelData(json);
@@ -27,20 +28,26 @@ define(['jquery', 'stapes'], function($, Stapes) {
 				}
 			});
 		},
+		getUserDetails: function() {
+			return userDetails;
+		},
 		setModelData: function(json) {
 			var key, file, fileId;
 
 			for (key in json) {
 				gist[key] = new Object();
 				gist[key]['description'] = json[key]['description'];
+
 				fileId = json[key]['id'];
 				this.getContent(fileId, key);
+
 				for (file in json[key]['files']) {
 					gist[key]['filename'] = json[key]['files'][file]['filename'];
 					gist[key]['content'] = "Loading...";
 				}
-				this.set(key, gist[key]);
+				this.set('name' + key, gist[key]);
 			}
+			this.emit('ready');
 		},
 		getContent: function(fileId, key) {
 			var self = this;
@@ -54,7 +61,8 @@ define(['jquery', 'stapes'], function($, Stapes) {
 					for (var file in json['files']) {
 						data = json['files'][file]['content'];
 					}
-					self.set(key + "content", data)
+					self.get(('name' + key)).set('content', data);
+					console.log(self.get('name' + key))
 					self.emit('gotContent');
 				}
 			});
