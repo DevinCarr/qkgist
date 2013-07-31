@@ -1,4 +1,4 @@
-define(['jquery', 'stapes', 'mustache', 'text!template/template.html'], function($, Stapes, Mustache, templateHTML) {
+define(['jquery', 'stapes', 'mustache', 'text!template/template.html'], function($, Stapes, Mustache,templateHTML) {
 	return Stapes.subclass({
 		constructor: function(model) {
 			this.model = model,
@@ -27,7 +27,7 @@ define(['jquery', 'stapes', 'mustache', 'text!template/template.html'], function
 		setPanel: function() {
 			var gists = this.model.getAllAsArray();
 			for (var i = 0; i < this.model.size(); i++) {
-				$('#qkgistsContainer').append('<div id="gistpanel' + i + '"></div>');
+				$('#qkgistsContainer').append('<div id="gistpanel' + i + '" class=""></div>');
 				var template = $(templateHTML).filter('#template-qkgist').html();
 				var output = Mustache.render(template, {
 					description: gists[i].description,
@@ -40,7 +40,7 @@ define(['jquery', 'stapes', 'mustache', 'text!template/template.html'], function
 		setContent: function() {
 			var gists = this.model.getAllAsArray();
 			for (var i = 0; i < this.model.size(); i++) {
-				var loc = '#gistpanel' + i
+				var loc = '#gistpanel' + i;
 				$(loc).find('#content').html(gists[i].content);
 			}
 		}

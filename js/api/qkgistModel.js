@@ -61,8 +61,8 @@ define(['jquery', 'stapes'], function($, Stapes) {
 					for (var file in json['files']) {
 						data = json['files'][file]['content'];
 					}
-					self.get(('name' + key)).set('content', data);
-					console.log(self.get('name' + key))
+					var a = self.get(('name' + key))
+					a.content = data;
 					self.emit('gotContent');
 				}
 			});

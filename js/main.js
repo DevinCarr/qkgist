@@ -2,11 +2,17 @@ require.config({
 	paths: {
 		jquery: 'lib/jquery.min',
 		mustache: 'lib/mustache',
-		stapes: 'lib/stapes.min'
+		stapes: 'lib/stapes.min',
+		bootstrap: 'lib/bootstrap.min'
+	},
+	shim: {
+		'bootstrap':{
+			deps: ['jquery']
+		}
 	}
 });
 
-define(['api/qkgistModel', 'api/qkgistView', 'api/qkgistController'], function(qModel, qView, qControl) {
+define(['jquery', 'bootstrap', 'api/qkgistModel', 'api/qkgistView', 'api/qkgistController'], function($, Bootstrap, qModel, qView, qControl) {
 	var model = new qModel("DevinCarr"),
 		view = new qView(model);
 

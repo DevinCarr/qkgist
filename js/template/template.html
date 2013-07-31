@@ -1,15 +1,18 @@
 <!-- Template for qkgist -->
 <html>
 	<div id='template-module'>
-		<div id='qheader'>
-			<p id="userName">{{userName}}</p>
-			<div id='userLink'>{{userLink}}</div>
+		<div id='qheader' class='panel-heading'>
+			<h1 id='userName' class='panel-header'>{{userName}}'s Gists</h1>
+			<div id='userLink'><a href='{{userLink}}'>GitHub</a></div>
 		</div>
-		<div id='qkgistsContainer'></div>
+		<div id='qkgistsContainer' class='container'></div>
 	</div>
 	<div id='template-qkgist'>
-		<p id='description'>{{description}}</p>
-		<p id='filename'>{{filename}}</p>
-		<p id='content'>{{content}}</p>
+		<ul class='nav nav-tabs'>
+			<li><h4 class='navbar-text'>Description: {{description}}</h4></li>
+			<li id='filename' class='active pull-right'><a href='#'><h4>{{filename}}</h4></a></li>
+		</ul>
+		<br>
+		<pre id='content'>{{content}}</pre>
 	</div>
 </html>
