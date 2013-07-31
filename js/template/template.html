@@ -1,9 +1,16 @@
 <!-- Template for qkgist -->
 <html>
 	<div id='template-module'>
-		<div id='qheader' class='panel-heading'>
-			<h1 id='userName' class='panel-header'>{{userName}}'s Gists</h1>
-			<div id='userLink'><a href='{{userLink}}'>GitHub</a></div>
+		<div id='qheader' class='panel-heading row'>
+			<div id='userName' class="col-lg-6 col-med-6"><h1><a href='{{userLink}}'>{{userName}}'s Gists</a></h1></div>
+			<div class="col-lg-4 col-med-2 pull-right">
+   				<div class="input-group">
+      				<input id="newUserName" type="text" class="form-control" placeholder="GitHub UserName (eg. DevinCarr)">
+      				<span class="input-group-btn">
+        				<button class="btn btn-default" type="button">Get</button>
+      				</span>
+    			</div>
+  			</div>
 		</div>
 		<div id='qkgistsContainer' class='container'></div>
 		<div class="panel-footer">
@@ -14,10 +21,12 @@
 	</div>
 	<div id='template-qkgist'>
 		<ul class='nav nav-tabs'>
-			<li><h4 class='navbar-text'>Description: {{description}}</h4></li>
+			<li><h4 class='navbar-text'>{{description}}</h4></li>
 			<li id='filename' class='active pull-right'><a href='#'><h4>{{filename}}</h4></a></li>
 		</ul>
 		<br>
-		<pre id='content'>{{content}}</pre>
+		<pre id='content' class="pre-scrollable">
+			<code>{{content}}</code>
+		</pre>
 	</div>
 </html>

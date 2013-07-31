@@ -23,6 +23,8 @@ define(['jquery', 'stapes', 'mustache', 'text!template/template.html'], function
 				userLink: this.model.getUserDetails().userLink
 			});
 			$('#qkgist').html(output);
+
+			this.extras();
 		},
 		setPanel: function() {
 			var gists = this.model.getAllAsArray();
@@ -41,8 +43,18 @@ define(['jquery', 'stapes', 'mustache', 'text!template/template.html'], function
 			var gists = this.model.getAllAsArray();
 			for (var i = 0; i < this.model.size(); i++) {
 				var loc = '#gistpanel' + i;
-				$(loc).find('#content').html(gists[i].content);
+				var data = gists[i].content.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+				$(loc).find('#content').html(data);
 			}
+		},
+		extras: function() {
+			$('button').on('click', $.proxy( function() {
+				if ($('#newUserName').val() !== '') {
+					this.model.newUser($('#newUserName').val());
+					this.emit('newUser');
+					this.buildModule();
+				}
+			}, this));
 		}
 	});
 });

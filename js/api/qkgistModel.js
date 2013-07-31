@@ -4,15 +4,21 @@ define(['jquery', 'stapes'], function($, Stapes) {
 	return Stapes.subclass({
 		constructor: function(user) {
 			userDetails['userName'] = user;
-			userDetails['userLink'] = 'https://gist.github.com/' + user;
+			userDetails['userLink'] = 'https://gist.github.com/' + userDetails.userName;
 		},
 		addItem: function(item) {
 			this.push(item);
+		},
+		newUser: function(user) {
+			userDetails.userName = user;
 		},
 		removeItem: function(itemToRemove) {
 			this.remove(function(item) {
 				return item === itemToRemove;
 			});
+		},
+		removeGists: function() {
+			this.remove();
 		},
 		apiCall: function() {
 			var self = this;
@@ -32,20 +38,26 @@ define(['jquery', 'stapes'], function($, Stapes) {
 			return userDetails;
 		},
 		setModelData: function(json) {
-			var key, file, fileId;
+			var key, file, fileId, num;
 
+			num = 0;
 			for (key in json) {
-				gist[key] = new Object();
-				gist[key]['description'] = json[key]['description'];
+				if (num < 5) {
+					gist[key] = new Object();
+					gist[key]['description'] = json[key]['description'];
 
-				fileId = json[key]['id'];
-				this.getContent(fileId, key);
+					fileId = json[key]['id'];
+					this.getContent(fileId, key);
 
-				for (file in json[key]['files']) {
-					gist[key]['filename'] = json[key]['files'][file]['filename'];
-					gist[key]['content'] = "Loading...";
+					for (file in json[key]['files']) {
+						gist[key]['filename'] = json[key]['files'][file]['filename'];
+						gist[key]['content'] = "Loading...";
+					}
+					this.set('name' + key, gist[key]);
+					num++;
+				} else {
+					break;
 				}
-				this.set('name' + key, gist[key]);
 			}
 			this.emit('ready');
 		},
