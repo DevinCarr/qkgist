@@ -11,14 +11,12 @@ define(['jquery', 'stapes'], function($, Stapes) {
 		},
 		newUser: function(user) {
 			userDetails.userName = user;
+			userDetails.userLink = 'https://gist.github.com/' + userDetails.userName;
 		},
 		removeItem: function(itemToRemove) {
 			this.remove(function(item) {
 				return item === itemToRemove;
 			});
-		},
-		removeGists: function() {
-			this.remove();
 		},
 		apiCall: function() {
 			var self = this;

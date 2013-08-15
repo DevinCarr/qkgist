@@ -55,6 +55,15 @@ define(['jquery', 'stapes', 'mustache', 'text!template/template.html'], function
 					this.buildModule();
 				}
 			}, this));
+			$('input').keypress($.proxy( function(e) {
+				if (e.which == 13) {
+					if ($('#newUserName').val() !== '') {
+						this.model.newUser($('#newUserName').val());
+						this.emit('newUser');
+						this.buildModule();
+					}
+				}
+			}, this));
 		}
 	});
 });
